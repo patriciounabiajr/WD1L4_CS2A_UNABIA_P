@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Grade System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f5f7;
+            padding: 16px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #34495e;
+            font-size: 30px;
+        }
+
+        h2 {
+            color: #222;
+            font-size: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-bottom: 15px;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px;
+            border: 1px solid #ccc;
+        }
+
+        td {
+            padding: 11px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background-color: #1a252f;
+        }
+
+        .result-container {
+            background: white;
+            padding: 15px;
+            margin-top: 0;
+        }
+
+        #gradeResult {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>List of Enrolled Students</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+
+        <tbody id="studentList"></tbody>
+    </table>
+
+    <button onclick="showGradeEquivalent()">
+        Show Grade Equivalent
+    </button>
+
+    <div class="result-container" id="gradeResult">
+
+        <h2>Grade Equivalents</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Grade</th>
+                    <th>Equivalent</th>
+                    <th>Remark</th>
+                    <th>Academic Leader</th>
+                </tr>
+            </thead>
+
+            <tbody id="gradeTable"></tbody>
+        </table>
+
+    </div>
+
+<script>
+
+    const students = [
+        { name: "Anna Reyes", grade: 92 },
+        { name: "Ben Santos", grade: 85 },
+        { name: "Carla Cruz", grade: 78 },
+        { name: "David Lim", grade: 97 },
+        { name: "Ella Ramos", grade: 74 }
+    ];
+
+    // Display enrolled students
+    function displayStudents() {
+
+        let output = "";
+
+        students.forEach(student => {
+
+            output += `
+                <tr>
+                    <td>${student.name}</td>
+                    <td>${student.grade}</td>
+                </tr>
+            `;
+
+        });
+
+        document.getElementById("studentList").innerHTML = output;
+    }
+
+    // Grade equivalent
+    function getEquivalent(grade) {
+
+        if (grade >= 96) return "1.0";
+        if (grade >= 90) return "1.5";
+        if (grade >= 85) return "2.0";
+        if (grade >= 80) return "2.5";
+        if (grade >= 75) return "2.75";
+
+        return "Failed";
+    }
+
+    // Show grade equivalents
+    function showGradeEquivalent() {
+
+        const sorted = [...students].sort(
+            (a, b) => b.grade - a.grade
+        );
+
+        let output = "";
+
+        students.forEach(student => {
+
+            let equivalent = getEquivalent(student.grade);
+
+            let remark = student.grade >= 75
+                ? "Passed"
+                : "Failed";
+
+            let leader = "-";
+
+            if (student.grade >= 95) {
+                leader = "1st Class Academic Leader";
+            } 
+            else if (student.grade >= 90) {
+                leader = "2nd Class Academic Leader";
+            }
+
+            output += `
+                <tr>
+                    <td>${student.name}</td>
+                    <td>${student.grade}</td>
+                    <td>${equivalent}</td>
+                    <td>${remark}</td>
+                    <td>${leader}</td>
+                </tr>
+            `;
+
+        });
+
+        document.getElementById("gradeTable").innerHTML = output;
+
+        document.getElementById("gradeResult").style.display = "block";
+    }
+
+    // Load students automatically
+    displayStudents();
+
+</script>
+
+</body>
+</html>
